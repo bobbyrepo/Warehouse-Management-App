@@ -152,10 +152,10 @@ function List() {
           ></div>
 
           <div className="px-6 py-4">
-            <div className="flex gap-[10px] items-center">
+            <div className="flex gap-[10px]">
               <h1 className="font-medium text-xl mb-2">{data.name}</h1>
               {data.is_live && (
-                <div className="px-2 text-md font-[600] text-white rounded-lg bg-green-400">
+                <div className="h-fit px-2 text-md font-[600] text-white rounded-lg bg-green-400">
                   Live
                 </div>
               )}

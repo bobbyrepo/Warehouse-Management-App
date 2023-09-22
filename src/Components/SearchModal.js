@@ -15,9 +15,8 @@ function SearchModal({
     <div className="absolute w-full">
       {isSearchModalOpen &&
         searchedData.map((data) => (
-          <Link to="/details">
+          <Link key={data.id} to="/details">
             <div
-              key={data.id}
               onClick={(e) => {
                 searchByWarehouse(dispatch, data.id);
               }}

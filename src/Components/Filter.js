@@ -15,7 +15,6 @@ function Filter() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(filteringData);
     if (filteringData.cities.length > 0) {
       setSelectedCities(filteringData.cities);
     }
