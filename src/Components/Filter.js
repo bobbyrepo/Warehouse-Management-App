@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
-import { searchByFilter } from "../redux/actions/SearchByFilter.js";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { searchByFilter } from "../redux/actions/SearchByFilter.js";
 
 function Filter() {
-  const aaa = useSelector((state) => state);
   const data = useSelector((state) => state.warehouseData);
   const filteringData = useSelector((state) => state.searchByFilter);
   const citiesArray = [...new Set(data.map((item) => item.city))]; // cities array from all warehouses for Filter
@@ -16,7 +15,6 @@ function Filter() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(aaa);
     console.log(filteringData);
     if (filteringData.cities.length > 0) {
       setSelectedCities(filteringData.cities);
@@ -29,12 +27,25 @@ function Filter() {
     }
   }, []);
 
+  //----- Applying Filters -----
   const applyFilter = (e) => {
     searchByFilter(dispatch, {
       cities: selectedCities,
       cluster: selectedCluster,
       space: minSpace,
     });
+  };
+
+  //----- clearing Filters -----
+  const clearFilter = (e) => {
+    searchByFilter(dispatch, {
+      cities: [],
+      cluster: [],
+      space: 1,
+    });
+    setSelectedCities([]);
+    setSelectedCluster([]);
+    setMinSpace(1);
   };
 
   //----- function to add selected items(city, cluster) for filtering -----
@@ -51,7 +62,16 @@ function Filter() {
   return (
     <div className="w-[20%] ">
       <div className="sticky top-[110px] border-2 border-gray-300 px-6 py-4">
-        <h1 className="font-medium text-2xl">Filters</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="font-medium text-2xl">Filters</h1>
+          <button
+            type="submit"
+            onClick={clearFilter}
+            className="mb-0 px-3 py-1 mb-2 font-medium text-lg border-[2px] border-red-500 rounded hover:bg-red-500 hover:text-white ease-out duration-200 "
+          >
+            Clear All
+          </button>
+        </div>
         <div className="bg-red-500 h-[3px] mt-1"></div>
         <h1 className="font-medium text-xl mt-8">Select City</h1>
         <div className="flex flex-wrap gap-3 mt-2">
