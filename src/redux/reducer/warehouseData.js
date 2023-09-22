@@ -1,4 +1,6 @@
-var data = [
+import actionTypes from "../constants/actionTypes";
+
+const warehouseData = [
   {
     name: "Warehouse-165",
     code: "W-00001",
@@ -143,4 +145,47 @@ var data = [
     is_live: false,
   },
 ];
-export default data;
+
+let count = 14;
+
+const warehouseDataReducer = (state = warehouseData, action) => {
+  switch (action.type) {
+    case actionTypes.ADD_WAREHOUSE_DATA:
+      return [
+        ...state,
+        {
+          name: action.payload.name,
+          code: "W-0000" + count++,
+          id: count++,
+          city: action.payload.city,
+          space_available: action.payload.space_available,
+          type: action.payload.type,
+          cluster: action.payload.cluster,
+          is_registered: true,
+          is_live: action.payload.is_live,
+        },
+      ];
+
+    case actionTypes.EDIT_WAREHOUSE_DATA:
+      const updatedState = state.map((warehouse) =>
+        warehouse.id === action.payload.id
+          ? {
+              ...warehouse,
+              name: action.payload.name,
+              city: action.payload.city,
+              space_available: action.payload.space_available,
+              type: action.payload.type,
+              cluster: action.payload.cluster,
+              is_live: action.payload.is_live,
+            }
+          : warehouse
+      );
+
+      return updatedState;
+
+    default:
+      return state;
+  }
+};
+
+export default warehouseDataReducer;

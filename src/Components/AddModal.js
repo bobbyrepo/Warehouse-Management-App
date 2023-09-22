@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../CSS/Modal.css";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { editWarehouseData } from "../redux/actions/warehouseData.js";
+import { addWarehouseData } from "../redux/actions/warehouseData";
 
-function EditModal({ isModalOpen, setIsModalOpen, successNotify, errNotify }) {
-  const allWarehouses = useSelector((state) => state.warehouseData);
-  const selectedId = useSelector((state) => state.searchByWarehouse.INIT_STATE);
-
-  const selectedWarehouse = allWarehouses.filter(
-    (warehouse) => warehouse.id === selectedId
-  );
-  const [name, setName] = useState(selectedWarehouse[0].name);
-  const [city, setCity] = useState(selectedWarehouse[0].city);
-  const [space, setSpace] = useState(selectedWarehouse[0].space_available);
-  const [type, setType] = useState(selectedWarehouse[0].type);
-  const [cluster, setCluster] = useState(selectedWarehouse[0].cluster);
-  const [isLive, setIsLive] = useState(selectedWarehouse[0].is_live);
+function AddModal({
+  isAddModalOpen,
+  setIsAddModalOpen,
+  successNotify,
+  errNotify,
+}) {
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [space, setSpace] = useState("");
+  const [type, setType] = useState("");
+  const [cluster, setCluster] = useState("");
+  const [isLive, setIsLive] = useState("");
 
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isNaN(Number(space))) {
+    if (!name || !city || !space || !type || !cluster) {
+      errNotify("Something is missing");
+    } else if (isNaN(Number(space))) {
       // Check if 'space' is not a valid number
       errNotify("Space should be a valid number");
     } else {
-      editWarehouseData(dispatch, {
-        id: selectedWarehouse[0].id,
+      addWarehouseData(dispatch, {
         name: name,
         city: city,
         space_available: space,
@@ -35,15 +34,21 @@ function EditModal({ isModalOpen, setIsModalOpen, successNotify, errNotify }) {
         cluster: cluster,
         is_live: isLive,
       });
-      successNotify("Edited Successfully");
-      setIsModalOpen(false);
+      setName("");
+      setCity("");
+      setSpace("");
+      setType("");
+      setCluster("");
+      setIsLive("");
+      successNotify("Added Successfully");
+      setIsAddModalOpen(false);
     }
   };
 
   return (
     <div
       className={`fixed inset-0 flex justify-center items-center z-50 ${
-        isModalOpen ? "" : "hidden"
+        isAddModalOpen ? "" : "hidden"
       }`}
     >
       <div className="fixed inset-0 bg-gray-600 backdrop-blur-2xl opacity-40"></div>
@@ -118,7 +123,7 @@ function EditModal({ isModalOpen, setIsModalOpen, successNotify, errNotify }) {
               <input
                 type="text"
                 id="name"
-                className="w-full border rounded-md py-1 px-2  font-[500] text-[23px] text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                className="w-full border rounded-md py-1 px-2 font-[500] text-[23px] text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
                 value={type}
                 onChange={(e) => {
                   setType(e.target.value);
@@ -169,20 +174,12 @@ function EditModal({ isModalOpen, setIsModalOpen, successNotify, errNotify }) {
               type="submit"
               className="px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-500"
             >
-              Save
+              Add
             </button>
             <button
               type="button"
               className="ml-2 px-4 py-2 bg-red-400 text-white rounded-md hover:bg-red-500"
-              onClick={(e) => {
-                setIsModalOpen(false);
-                setName(selectedWarehouse[0].name);
-                setCity(selectedWarehouse[0].city);
-                setSpace(selectedWarehouse[0].space_available);
-                setType(selectedWarehouse[0].type);
-                setCluster(selectedWarehouse[0].cluster);
-                setIsLive(selectedWarehouse[0].is_live);
-              }}
+              onClick={(e) => setIsAddModalOpen(false)}
             >
               Cancel
             </button>
@@ -193,4 +190,4 @@ function EditModal({ isModalOpen, setIsModalOpen, successNotify, errNotify }) {
   );
 }
 
-export default EditModal;
+export default AddModal;
