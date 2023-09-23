@@ -13,7 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function List() {
-  let img = `https://source.unsplash.com/1600x900/?warehouse`;
+  let img = `https://source.unsplash.com/600x900/?warehouse`;
   const data = useSelector((state) => state.warehouseData);
   const filteringData = useSelector((state) => state.searchByFilter);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
