@@ -147,7 +147,7 @@ function List() {
         {warehousesData.map((data) => (
           <div
             key={data.id}
-            className="flex border-2 border-gray-300 hover:border-red-500 duration-300"
+            className="flex mb-4 border-2 border-gray-300 hover:border-red-500 duration-300"
           >
             <div
               className="bg-div w-[160px]"
